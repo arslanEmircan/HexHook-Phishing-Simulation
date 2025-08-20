@@ -29,46 +29,35 @@ The project combines **Python** and **PHP/HTML** components to simulate realisti
 
 ---
 
-## Project Structure
-hexhook/
-├─ mailer/ # Python scripts
-│ ├─ main.py # Scenario selection and control
-│ ├─ mailer.py # Email creation (SMTP demo mode)
-│ └─ templates/ # Email HTML templates
-├─ web/ # Phishing webpage templates (XAMPP)
-│ ├─ facebook/
-│ ├─ instagram/
-│ ├─ twitter/
-│ ├─ obs/
-│ └─ sandova/
-├─ config/
-│ ├─ .env.example # Example environment variables (DO NOT use real credentials)
-│ └─ mailer.config.sample.json
-└─ docs/
-└─ thesis.pdf # Related academic thesis
-
-
----
-
 ## How to Run (Demo Mode)
 > **Important:** Only in a **controlled lab/test environment**. Never use real data or send real phishing emails.
 
 1. Clone the repository  
    ```bash
    git clone https://github.com/arslanEmircan/HexHook-Phishing-Simulation.git
+2. Install dependencies for Python (requirements.txt if provided).
 
-   Purpose
+3. Set up XAMPP and place web/ folders under htdocs/.
 
-This tool was created to:
+4. Run the mailer demo:
 
-Demonstrate how phishing attacks can be technically implemented.
+---
 
-Raise awareness in cybersecurity education.
+## Purpose
 
-Provide a safe simulation environment for learning and research.
+-This tool was created to:
 
-Author
+-Demonstrate how phishing attacks can be technically implemented.
 
-Muhammet Emircan Arslan
-Bachelor’s Thesis – Computer Engineering(2025)
+-Raise awareness in cybersecurity education.
+
+-Provide a safe simulation environment for learning and research.
+
+---
+
+## Author
+
+-Muhammet Emircan Arslan 
+
+-Bachelor’s Thesis – Computer Engineering(2025)
 
