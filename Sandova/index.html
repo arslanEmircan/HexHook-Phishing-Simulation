@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandova Retreat</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #d2a679;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 22px;
+      color: white;
+    }
+
+    nav a {
+      margin: 0 18px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .reserve-btn {
+      background-color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #d2a679;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .hero {
+      text-align: center;
+      background-color: #e9e9e9;
+      padding: 50px 20px 30px 20px;
+    }
+
+    .hero h1 {
+      font-size: 26px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-top: 10px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    section {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px 20px;
+    }
+
+    .gallery-item {
+      width: 45%;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .gallery-item p {
+      font-weight: bold;
+      padding: 10px;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    @media(max-width: 768px) {
+      .gallery-item {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Sandova Retreat</div>
+    <nav>
+      <a href="index.html">Ana Sayfa</a>
+      <a href="odalar.html">Odalar</a>
+      <a href="iletişim.html">İletişim</a>
+    </nav>
+    <a href="ödeme.html"><button class="reserve-btn">Rezervasyon Yap</button></a>
+  </header>
+
+  <div class="hero">
+    <h1>Hayalinizdeki Tatil Burada Başlıyor</h1>
+    <p>Kazdağları'nın eşsiz doğasında huzur dolu bir kaçamak. Doğayla iç içe, konforla çevrili özel bir deneyim sizi bekliyor.</p>
+    <p>Modern olanaklarla donatılmış tesisimizde, doğanın içinde uyanacak, taze hava eşliğinde dinlenecek ve unutulmaz anılar biriktireceksiniz. Hem huzur arayanlar hem de macera tutkunları için mükemmel bir tatil fırsatı sizi bekliyor.</p>
+  </div>
+
+  <section>
+    <h2>Neden Sandova Retreat?</h2>
+    <p>Denize sıfır konumu, doğayla iç içe atmosferi ve lüks odalarıyla size özel bir tatil sunuyoruz.</p>
+  </section>
+
+  <section>
+    <h2>Konaklama Seçenekleri</h2>
+    <p>Standart Odalar, Deluxe Suitler, Aile Odaları ve daha fazlası sizleri bekliyor.</p>
+
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="liberty-lykia-myra-main-restoran-card.jpg" alt="Restoran">
+        <p>Deniz Kenarında Gurme Restoran</p>
+      </div>
+      <div class="gallery-item">
+        <img src="liberty-lykia-galeri-aktivite-parasut-card3.jpg" alt="Yamaç Paraşütü">
+        <p>Ege'nin Üzerinde Özgürce Uçun</p>
+      </div>
+      <div class="gallery-item">
+        <img src="1.jpg" alt="Havuzlu Oda">
+        <p>Size Özel Havuzlu Konaklama Alanları</p>
+      </div>
+      <div class="gallery-item">
+        <img src="liberty-fabay-beach-card.jpg" alt="Plaj">
+        <p>Geniş ve Konforlu Plaj Alanı</p>
+      </div>
+      <div class="gallery-item">
+        <img src="liberty-signa-family-suit-banner.jpg" alt="Aile Odaları">
+        <p>Aileler İçin Ferah Yaşam Alanları</p>
+      </div>
+      <div class="gallery-item">
+        <img src="liberty-adults-only-anasayfa-kesfet-card.jpg" alt="Havuz Keyfi">
+        <p>Gün Batımında Serinleten Havuz Keyfi</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Sandova Retreat | info@sandovaretreat.com | +90 212 123 45 67<br>
+    Atatürk Bulvarı No:172, Kardelenler Mahallesi, 09450 Kuşadası / Aydın
+  </footer>
+
+</body>
+</html>

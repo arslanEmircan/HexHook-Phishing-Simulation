@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandova Retreat - Rezervasyon</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f2f2f2; margin: 0; }
+    header {
+      background-color: #d2a679;
+      color: white;
+      padding: 25px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .reserve-btn {
+      background-color: white;
+      color: #d2a679;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select {
+      width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc;
+    }
+    .checkbox-group { margin-top: 10px; }
+    .price-line {
+      text-align: center;
+      font-size: 18px;
+      margin: 20px 0;
+      display: none;
+    }
+    .btn-calculate {
+      margin-top: 20px;
+      background-color: #d2a679;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .note {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+    }
+  </style>
+  <script>
+    let toplamFiyat = 0;
+    function calculatePrice() {
+      let odaFiyatlari = {
+        "Standart Oda (₺3000 / gece)": 3000,
+        "Bahçe Katı (₺3500 / gece)": 3500,
+        "Havuz Manzaralı (₺3800 / gece)": 3800,
+        "Deluxe Suit (₺5000 / gece)": 5000
+      };
+
+      const giris = new Date(document.getElementById("giris").value);
+      const cikis = new Date(document.getElementById("cikis").value);
+      const gunSayisi = (cikis - giris) / (1000 * 3600 * 24);
+      if (isNaN(gunSayisi) || gunSayisi <= 0) {
+        alert("Lütfen geçerli bir tarih aralığı seçin.");
+        return;
+      }
+
+      const odaTipi = document.getElementById("oda").value;
+      let yetiskinSayisi = parseInt(document.getElementById("kisi").value);
+      let cocukSayisi = parseInt(document.getElementById("cocuk").value);
+      if (isNaN(cocukSayisi)) cocukSayisi = 0;
+
+      let odaFiyati = odaFiyatlari[odaTipi];
+
+      if (yetiskinSayisi > 2) {
+        odaFiyati += 750; // 4 kişilik odaya yükseltme
+      }
+
+      let toplam = odaFiyati * gunSayisi;
+
+      // Çocuklar %50 indirimli ücretli sayılır
+      const cocukUcreti = (odaFiyati * 0.5) * cocukSayisi;
+      toplam += cocukUcreti;
+
+      if (document.getElementById("kahvalti").checked) toplam += 400 * gunSayisi;
+      if (document.getElementById("aksam").checked) toplam += 500 * gunSayisi;
+      if (document.getElementById("ulasim").checked) toplam += 2000;
+
+      if (document.getElementById("parasailing").checked) toplam += 600;
+      if (document.getElementById("sukayagi").checked) toplam += 500;
+      if (document.getElementById("voleybol").checked) toplam += 200;
+      if (document.getElementById("spa").checked) toplam += 700;
+      if (document.getElementById("jetski").checked) toplam += 800;
+
+      toplamFiyat = toplam;
+
+      document.getElementById("totalPrice").innerText = `Toplam Tutar: ${toplam.toLocaleString()}₺`;
+      document.querySelector(".price-line").style.display = "block";
+      // Butona fiyatı gönder
+      document.getElementById("gotoPayment").onclick = function() {
+        window.location.href = `ödemeAl.html?fiyat=${toplam}`;
+      };
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div>Sandova Retreat</div>
+    <nav>
+      <a href="index.html">Ana Sayfa</a>
+      <a href="odalar.html">Odalar</a>
+      <a href="iletişim.html">İletişim</a>
+    </nav>
+    <a href="ödeme.html"><button class="reserve-btn">Rezervasyon Yap</button></a>
+  </header>
+
+  <div class="container">
+    <h2>Rezervasyonunuzu Oluşturun</h2>
+    <label>Giriş Tarihi:</label>
+    <input type="date" id="giris">
+    <label>Çıkış Tarihi:</label>
+    <input type="date" id="cikis">
+
+    <label>Yetişkin Sayısı:</label>
+    <input type="number" min="1" value="1" id="kisi">
+
+    <label>Çocuk Sayısı:</label>
+    <input type="number" min="0" value="0" id="cocuk">
+    <p class="note">* 2 yetişkinden fazla konaklamalarda 4 kişilik odaya geçilir ve oda fiyatına 750₺ sabit ek ücret uygulanır.<br>* 6 yaş altı çocuklar ücretsizdir. Diğer çocuklar %50 indirimli olarak ücretlendirilir.</p>
+
+    <label>Oda Türü:</label>
+    <select id="oda">
+      <option>Standart Oda (₺3000 / gece)</option>
+      <option>Bahçe Katı (₺3500 / gece)</option>
+      <option>Havuz Manzaralı (₺3800 / gece)</option>
+      <option>Deluxe Suit (₺5000 / gece)</option>
+    </select>
+
+    <label>Ekstra Hizmetler:</label>
+    <div class="checkbox-group">
+      <input type="checkbox" id="kahvalti"> Açık Büfe Kahvaltı (400₺/gün)<br>
+      <input type="checkbox" id="aksam"> Akşam Yemeği (500₺/gün)<br>
+      <input type="checkbox" id="ulasim"> Ulaşım Desteği (2000₺ sabit)<br>
+    </div>
+
+    <label>Tatil Aktiviteleri:</label>
+    <div class="checkbox-group">
+      <input type="checkbox" id="parasailing"> Parasailing (600₺)<br>
+      <input type="checkbox" id="sukayagi"> Su Kayağı (500₺)<br>
+      <input type="checkbox" id="voleybol"> Plaj Voleybolu (200₺)<br>
+      <input type="checkbox" id="spa"> Spa & Masaj (700₺)<br>
+      <input type="checkbox" id="jetski"> Jet Ski (800₺)<br>
+    </div>
+
+    <button class="btn-calculate" onclick="calculatePrice()">Fiyatı Hesapla</button>
+
+    <div class="price-line">
+      <p id="totalPrice"></p>
+      <button id="gotoPayment" class="btn-calculate">Rezervasyonu Tamamla</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Sandova Retreat | info@sandovaretreat.com | +90 212 123 45 67 | Kuşadası / Aydın
+  </footer>
+</body>
+</html>

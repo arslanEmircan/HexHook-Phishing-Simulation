@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kodu Doğrula</title>
+  <link rel="icon" type="image/png" href="facebook-icon.png">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      width: 350px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #1877f2;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0d65d9;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Doğrulama Kodu</h2>
+    <p>Mailinize gelen 4 haneli kodu aşağıya girin.</p>
+    <form action="verify-code.php" method="post">
+      <input type="text" name="code" maxlength="4" placeholder="Kodu girin" required>
+      <button type="submit">Doğrula</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandova Retreat - Ödeme</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background-color: #f9f9f9; }
+    .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #333; }
+    label { display: block; margin-top: 20px; font-weight: bold; }
+    input, select {
+      width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-top: 5px;
+    }
+    .indirim-bolumu, .odeme-bolumu, .odeme-tipleri, .sonuc, .kullanici-bilgileri, .kart-bilgileri, .iban-bilgisi { margin-top: 30px; }
+    .btn {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #d2a679;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .note { font-size: 14px; color: #666; margin-top: 10px; font-style: italic; }
+    .hidden { display: none; }
+    .footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ödeme Sayfası</h2>
+    <form action="log.php" method="post" enctype="multipart/form-data">
+      <div class="sonuc">
+        <label>Toplam Tutar:</label>
+        <p id="orijinalTutar"></p>
+        <input type="hidden" name="tutar" id="hiddenTutar">
+      </div>
+
+      <div class="indirim-bolumu">
+        <label>EmircanSoft Çalışanları için %40 indirim:</label>
+        <input type="email" placeholder="Şirket E-posta adresinizi girin" id="mail" name="mail">
+        <button class="btn" type="button" onclick="kodGonder()">Kodu Gönder</button>
+        <input type="text" placeholder="Mailinize gelen kodu girin" id="kod">
+        <button class="btn" type="button" onclick="indirimUygula()">İndirimi Uygula</button>
+        <p id="indirimliFiyat"></p>
+      </div>
+
+      <div class="odeme-bolumu">
+        <label>Ödeme Seçeneği:</label>
+        <input type="radio" name="odemeTuru" value="tam" checked onclick="odemeHesapla()"> Tam Ödeme <br>
+        <input type="radio" name="odemeTuru" value="kapora" onclick="odemeHesapla()"> Kapora (%15) <br>
+        <p class="note">* Kapora ödemelerinde 2 hafta içinde ücretsiz iptal hakkına sahipsiniz.</p>
+        <p id="odenecekMiktar"></p>
+      </div>
+
+      <div class="odeme-tipleri">
+        <label>Ödeme Yöntemi:</label>
+        <input type="radio" name="odemeYontemi" value="kart" checked onclick="toggleDekont(false)"> Kredi/Banka Kartı ile Ödeme <br>
+        <input type="radio" name="odemeYontemi" value="iban" onclick="toggleDekont(true)"> IBAN ile Havale/EFT <br>
+      </div>
+
+      <div class="kullanici-bilgileri">
+        <label>İsim Soyisim:</label>
+        <input type="text" name="isim" required>
+        <label>Telefon Numarası:</label>
+        <input type="tel" name="telefon" required>
+      </div>
+
+      <div class="kart-bilgileri" id="kartBilgileri">
+        <label>Kartın Üzerindeki İsim:</label>
+        <input type="text" name="kart_isim">
+        <label>Kart Numarası:</label>
+        <input type="text" name="kartno" maxlength="19" oninput="kartBosluk(this)">
+        <label>Son Kullanma Tarihi:</label>
+        <div style="display: flex; gap: 10px;">
+          <select name="ay">
+            <option>Ay</option>
+            <script>
+              for (let i = 1; i <= 12; i++) {
+                document.write(`<option>${i.toString().padStart(2, '0')}</option>`);
+              }
+            </script>
+          </select>
+          <select name="yil">
+            <option>Yıl</option>
+            <script>
+              for (let i = 2025; i <= 2045; i++) {
+                document.write(`<option>${i}</option>`);
+              }
+            </script>
+          </select>
+        </div>
+        <label>CVV:</label>
+        <input type="text" name="cvv" maxlength="4">
+      </div>
+
+      <div class="iban-bilgisi hidden" id="ibanBilgisi">
+        <label>IBAN:</label>
+        <input type="text" value="TR00 0000 0000 0000 0000 0000 00 (XX XX)" readonly>
+        <label>Dekont Yükle:</label>
+        <input type="file" name="dekont">
+      </div>
+
+      <button class="btn" type="submit">Ödemeyi Tamamla</button>
+    </form>
+  </div>
+
+  <div class="footer">
+    © 2025 Sandova Retreat | info@sandovaretreat.com | +90 212 123 45 67 | Kuşadası / Aydın
+  </div>
+
+  <script>
+    // URL'den fiyat parametresini al
+    function urlParamAl(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    // Fiyatı başta ayarla
+    let fiyat = urlParamAl("fiyat");
+    let orijinalTutar = 14500;
+    let indirimliTutar = 14500;
+
+    if (fiyat && !isNaN(fiyat)) {
+      orijinalTutar = parseInt(fiyat);
+      indirimliTutar = orijinalTutar;
+      document.getElementById("orijinalTutar").innerText = Number(fiyat).toLocaleString("tr-TR") + "₺";
+      document.getElementById("hiddenTutar").value = fiyat;
+    } else {
+      document.getElementById("orijinalTutar").innerText = "14.500₺";
+      document.getElementById("hiddenTutar").value = "14500";
+    }
+
+    // EmircanSoft mail kontrolü
+    function kodGonder() {
+      const mail = document.getElementById("mail").value.trim();
+      if (!mail) return alert("Lütfen mail adresinizi girin!");
+      // Sadece EmircanSoft veya arslannemir@hotmail.com kabul edilir
+      const isValid =
+        mail.toLowerCase().endsWith("@emircansoft.com") ||
+        mail.toLowerCase() === "arslannemir@hotmail.com";
+      if (!isValid) {
+        alert("Bu kampanya yalnızca EmircanSoft çalışanlarına özeldir! Lütfen kurumsal e-posta adresinizi girin.");
+        return;
+      }
+      fetch("send-code.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "mail=" + encodeURIComponent(mail)
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) alert("Kod mailinize gönderildi!");
+        else alert("Kod gönderilemedi: " + res.message);
+      });
+    }
+
+    // Kod doğrula (verify-code.php'ye istek atar)
+    function indirimUygula() {
+      const kod = document.getElementById("kod").value.trim();
+      if (!kod) return alert("Lütfen kodu girin!");
+      fetch("verify-code.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "kod=" + encodeURIComponent(kod)
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) {
+          indirimliTutar = Math.round(orijinalTutar * 0.6);
+          document.getElementById("indirimliFiyat").innerText = `İndirimli Tutar: ${indirimliTutar.toLocaleString("tr-TR")}₺`;
+          document.getElementById("hiddenTutar").value = indirimliTutar;
+          odemeHesapla();
+        } else {
+          alert("Kod hatalı veya süresi doldu.");
+        }
+      });
+    }
+
+    function odemeHesapla() {
+      const odemeTuru = document.querySelector('input[name="odemeTuru"]:checked').value;
+      let tutar = indirimliTutar || orijinalTutar;
+      let odenecek = (odemeTuru === "kapora") ? Math.round(tutar * 0.15) : tutar;
+      document.getElementById("odenecekMiktar").innerText = `Ödenecek Tutar: ${odenecek.toLocaleString("tr-TR")}₺`;
+    }
+
+    function toggleDekont(show) {
+      document.getElementById("ibanBilgisi").className = show ? "iban-bilgisi" : "iban-bilgisi hidden";
+      document.getElementById("kartBilgileri").style.display = show ? "none" : "block";
+    }
+
+    function kartBosluk(input) {
+      let value = input.value.replace(/\D/g, '').substring(0, 16);
+      input.value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+    }
+
+    // Sayfa yüklenince ödeme miktarını otomatik göster
+    window.onload = odemeHesapla;
+  </script>
+</body>
+</html>

